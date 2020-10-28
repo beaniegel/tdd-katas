@@ -43,7 +43,10 @@ class RomanNumeral
         $partition = (int) floor($input / $divider);
         array_push($partitionedInput, $partition);
 
-        return $this->partitionInput($input % $divider, $divider / 10, $partitionedInput);
+        $inputForNextPartition = $input % $divider;
+        $dividerForNextPartition = $divider / 10;
+
+        return $this->partitionInput($inputForNextPartition, $dividerForNextPartition, $partitionedInput);
     }
 
     private function convert(int $input, string $lowRoman, string $mediumRoman = '', string $highRoman = ''): string
