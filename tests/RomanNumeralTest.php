@@ -8,16 +8,8 @@ use PHPUnit\Framework\TestCase;
 /** @covers \jellybean\RomanNumeral */
 class RomanNumeralTest extends TestCase
 {
-    private RomanNumeral $romanNumeral;
-
-    protected function setUp(): void
+    public function invalidInputProvider(): array
     {
-        parent::setUp();
-
-        $this->romanNumeral = new RomanNumeral();
-    }
-
-    public function invalidInputProvider(){
         return [
             [-593],
             [-1],
@@ -30,24 +22,15 @@ class RomanNumeralTest extends TestCase
     /**
      * @dataProvider invalidInputProvider
      */
-    public function testException(int $invalidInput)
+    public function testException(int $invalidInput): void
     {
         $this->expectException(InvalidArgumentException::class);
-
-        $this->romanNumeral->fromInteger($invalidInput);
-    }
-
-    /**
-     * @dataProvider invalidInputProvider
-     */
-    public function testExceptionMessage(int $invalidInput)
-    {
         $this->expectExceptionMessage('Integer should be higher than 0 and lower than 4000');
 
-        $this->romanNumeral->fromInteger($invalidInput);
+        RomanNumeral::fromInteger($invalidInput);
     }
 
-    public function singleDigitsProvider()
+    public function singleDigitsProvider(): array
     {
         return [
             [1, 'I'],
@@ -62,7 +45,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function simpleTwoDigitsProvider()
+    public function simpleTwoDigitsProvider(): array
     {
         return [
             [10, 'X'],
@@ -77,7 +60,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function simpleThreeDigitsProvider()
+    public function simpleThreeDigitsProvider(): array
     {
         return [
             [100, 'C'],
@@ -92,7 +75,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function simpleFourDigitsProvider()
+    public function simpleFourDigitsProvider(): array
     {
         return [
             [1000, 'M'],
@@ -101,7 +84,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function advancedTwoDigitsProvider()
+    public function advancedTwoDigitsProvider(): array
     {
         return [
             [24, 'XXIV'],
@@ -112,7 +95,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function advancedThreeDigitsProvider()
+    public function advancedThreeDigitsProvider(): array
     {
         return [
             [324, 'CCCXXIV'],
@@ -123,7 +106,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function advancedFourDigitsProvider()
+    public function advancedFourDigitsProvider(): array
     {
         return [
             [1401, 'MCDI'],
@@ -143,8 +126,27 @@ class RomanNumeralTest extends TestCase
      * @dataProvider advancedThreeDigitsProvider
      * @dataProvider advancedFourDigitsProvider
      */
-    public function testRomanNumerals(int $input, string $expected) {
-        $numeral = $this->romanNumeral->fromInteger($input);
-        $this->assertSame($expected, $numeral);
+    public function testRomanNumeral(int $input, string $expected): void
+    {
+        $numeral = RomanNumeral::fromInteger($input);
+
+        $this->assertSame($input, $numeral->asDigit());
+        $this->assertSame($expected, $numeral->getValue());
+    }
+
+    /**
+     * @dataProvider singleDigitsProvider
+     * @dataProvider simpleTwoDigitsProvider
+     * @dataProvider simpleThreeDigitsProvider
+     * @dataProvider simpleFourDigitsProvider
+     * @dataProvider advancedTwoDigitsProvider
+     * @dataProvider advancedThreeDigitsProvider
+     * @dataProvider advancedFourDigitsProvider
+     */
+    public function testStringCast(int $input, string $expected): void
+    {
+        $numeral = RomanNumeral::fromInteger($input);
+
+        $this->assertSame($expected, (string) $numeral);
     }
 }
