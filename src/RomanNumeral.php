@@ -49,7 +49,7 @@ class RomanNumeral
         return $this->partitionInput($inputForNextPartition, $dividerForNextPartition, $partitionedInput);
     }
 
-    private function convert(int $input, string $lowRoman, string $mediumRoman = '', string $highRoman = ''): string
+    private function convert(int $input, string $lowRoman, string $mediumRoman = null, string $highRoman = null): string
     {
         $numeral = '';
 
