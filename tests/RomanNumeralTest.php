@@ -47,7 +47,7 @@ class RomanNumeralTest extends TestCase
         $this->romanNumeral->fromInteger($invalidInput);
     }
 
-    public function digitsUnderTenProvider()
+    public function singleDigitsProvider()
     {
         return [
             [1, 'I'],
@@ -62,7 +62,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function digitsAsTensProvider()
+    public function simpleTwoDigitsProvider()
     {
         return [
             [10, 'X'],
@@ -77,7 +77,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function digitsAsHundredsProvider()
+    public function simpleThreeDigitsProvider()
     {
         return [
             [100, 'C'],
@@ -92,7 +92,7 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-    public function digitsAsThousandsProvider()
+    public function simpleFourDigitsProvider()
     {
         return [
             [1000, 'M'],
@@ -100,12 +100,12 @@ class RomanNumeralTest extends TestCase
             [3000, 'MMM']
         ];
     }
-    
+
     /**
-     * @dataProvider digitsUnderTenProvider
-     * @dataProvider digitsAsTensProvider
-     * @dataProvider digitsAsHundredsProvider
-     * @dataProvider digitsAsThousandsProvider
+     * @dataProvider singleDigitsProvider
+     * @dataProvider simpleTwoDigitsProvider
+     * @dataProvider simpleThreeDigitsProvider
+     * @dataProvider simpleFourDigitsProvider
      */
     public function testRomanNumerals(int $input, string $expected) {
         $numeral = $this->romanNumeral->fromInteger($input);
