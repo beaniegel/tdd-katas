@@ -40,11 +40,10 @@ class RomanNumeral
             return $partitionedInput;
         }
 
-        $quotient = (int) floor($input / $divider);
-        array_push($partitionedInput, $quotient);
-        $remainder = $input % $divider;
+        $partition = (int) floor($input / $divider);
+        array_push($partitionedInput, $partition);
 
-        return $this->partitionInput($remainder, $divider / 10, $partitionedInput);
+        return $this->partitionInput($input % $divider, $divider / 10, $partitionedInput);
     }
 
     private function convert(int $input, string $lowRoman, string $mediumRoman = '', string $highRoman = ''): string
