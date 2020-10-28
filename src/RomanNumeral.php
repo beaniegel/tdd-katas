@@ -6,7 +6,6 @@ namespace jellybean;
 
 
 use InvalidArgumentException;
-use function PHPUnit\Framework\throwException;
 
 class RomanNumeral
 {
