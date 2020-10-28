@@ -7,7 +7,7 @@ namespace jellybean;
 
 use InvalidArgumentException;
 
-class RomanNumeral
+final class RomanNumeral
 {
     const THOUSANDS = 0;
     const HUNDREDS = 1;
