@@ -112,12 +112,26 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
+    public function advancedThreeDigitsProvider()
+    {
+        return [
+            [324, 'CCCXXIV'],
+            [470, 'CDLXX'],
+            [502, 'DII'],
+            [784, 'DCCLXXXIV'],
+            [999, 'CMXCIX']
+        ];
+    }
+
+
+
     /**
      * @dataProvider singleDigitsProvider
      * @dataProvider simpleTwoDigitsProvider
      * @dataProvider simpleThreeDigitsProvider
      * @dataProvider simpleFourDigitsProvider
      * @dataProvider advancedTwoDigitsProvider
+     * @dataProvider advancedThreeDigitsProvider
      */
     public function testRomanNumerals(int $input, string $expected) {
         $numeral = $this->romanNumeral->fromInteger($input);
