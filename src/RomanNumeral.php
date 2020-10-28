@@ -56,11 +56,11 @@ class RomanNumeral
         if ($input === 0) {
             return $numeral;
         }
-        if ($input === 9) {
-            return $lowRoman . $highRoman;
-        }
         if ($input === 4) {
             return $lowRoman . $mediumRoman;
+        }
+        if ($input === 9) {
+            return $lowRoman . $highRoman;
         }
         if ($input >= 5) {
           $numeral .= $mediumRoman;
