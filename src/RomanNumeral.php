@@ -14,7 +14,8 @@ class RomanNumeral
     const TENS = 2;
     const ONES = 3;
 
-    public function fromInteger(int $input) {
+    public function fromInteger(int $input): string
+    {
         $this->validateInput($input);
 
         $input = $this->partitionInput($input);
@@ -26,7 +27,7 @@ class RomanNumeral
         return $numeral;
     }
 
-    private function validateInput(int $input)
+    private function validateInput(int $input): void
     {
         if ($input <= 0 || $input >= 4000) {
             throw new InvalidArgumentException('Integer should be higher than 0 and lower than 4000');
