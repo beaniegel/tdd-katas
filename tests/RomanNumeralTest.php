@@ -91,11 +91,21 @@ class RomanNumeralTest extends TestCase
             [900, 'CM']
         ];
     }
+
+    public function digitsAsThousandsProvider()
+    {
+        return [
+            [1000, 'M'],
+            [2000, 'MM'],
+            [3000, 'MMM']
+        ];
+    }
     
     /**
      * @dataProvider digitsUnderTenProvider
      * @dataProvider digitsAsTensProvider
      * @dataProvider digitsAsHundredsProvider
+     * @dataProvider digitsAsThousandsProvider
      */
     public function testRomanNumerals(int $input, string $expected) {
         $numeral = $this->romanNumeral->fromInteger($input);
