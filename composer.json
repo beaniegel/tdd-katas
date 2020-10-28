@@ -1,0 +1,20 @@
+{
+  "name": "jellybean/tdd-katas",
+  "description": "implementation of TDD Katas by Dave Liddament",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jellybean",
+      "email": "mail@jelena.io"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "jellybean\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
+}
