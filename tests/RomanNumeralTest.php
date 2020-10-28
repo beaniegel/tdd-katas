@@ -101,11 +101,23 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
+    public function advancedTwoDigitsProvider()
+    {
+        return [
+            [24, 'XXIV'],
+            [39, 'XXXIX'],
+            [47, 'XLVII'],
+            [51, 'LI'],
+            [65, 'LXV']
+        ];
+    }
+
     /**
      * @dataProvider singleDigitsProvider
      * @dataProvider simpleTwoDigitsProvider
      * @dataProvider simpleThreeDigitsProvider
      * @dataProvider simpleFourDigitsProvider
+     * @dataProvider advancedTwoDigitsProvider
      */
     public function testRomanNumerals(int $input, string $expected) {
         $numeral = $this->romanNumeral->fromInteger($input);
