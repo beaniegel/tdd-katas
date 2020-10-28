@@ -123,7 +123,16 @@ class RomanNumeralTest extends TestCase
         ];
     }
 
-
+    public function advancedFourDigitsProvider()
+    {
+        return [
+            [1401, 'MCDI'],
+            [2026, 'MMXXVI'],
+            [2514, 'MMDXIV'],
+            [3888, 'MMMDCCCLXXXVIII'],
+            [3999, 'MMMCMXCIX']
+        ];
+    }
 
     /**
      * @dataProvider singleDigitsProvider
@@ -132,6 +141,7 @@ class RomanNumeralTest extends TestCase
      * @dataProvider simpleFourDigitsProvider
      * @dataProvider advancedTwoDigitsProvider
      * @dataProvider advancedThreeDigitsProvider
+     * @dataProvider advancedFourDigitsProvider
      */
     public function testRomanNumerals(int $input, string $expected) {
         $numeral = $this->romanNumeral->fromInteger($input);
