@@ -18,7 +18,6 @@ class RomanNumeral
         $this->validateInput($input);
 
         $input = $this->partitionInput($input);
-
         $numeral = $this->convert($input[self::THOUSANDS], 'M');
         $numeral .= $this->convert($input[self::HUNDREDS], 'C', 'D', 'M');
         $numeral .= $this->convert($input[self::TENS], 'X', 'L', 'C');
@@ -34,22 +33,18 @@ class RomanNumeral
         }
     }
 
-    private function partitionInput(int $input): array
+    private function partitionInput(int $input, int $divider = 1000, array $partitionedInput = []): array
     {
-        $partitionedInput = [];
+        if ($divider === 1) {
+            array_push($partitionedInput, $input);
+            return $partitionedInput;
+        }
 
-        $thousands = (int) floor($input / 1000);
-        $input = $input % 1000;
+        $quotient = (int) floor($input / $divider);
+        array_push($partitionedInput, $quotient);
+        $remainder = $input % $divider;
 
-        $hundreds = (int) floor($input / 100);
-        $input = $input % 100;
-
-        $tens = (int) floor($input / 10);
-        $ones = $input % 10;
-
-        array_push($partitionedInput,$thousands,$hundreds,$tens,$ones);
-
-        return $partitionedInput;
+        return $this->partitionInput($remainder, $divider / 10, $partitionedInput);
     }
 
     private function convert(int $input, string $lowRoman, string $mediumRoman = '', string $highRoman = ''): string
@@ -65,7 +60,6 @@ class RomanNumeral
         if ($input === 4) {
             return $lowRoman . $mediumRoman;
         }
-
         if ($input >= 5) {
           $numeral .= $mediumRoman;
           $input -= 5;
