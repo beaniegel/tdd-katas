@@ -4,27 +4,47 @@ declare(strict_types=1);
 
 namespace jellybean;
 
-
+use function array_push;
+use function floor;
+use function str_repeat;
 use InvalidArgumentException;
 
 final class RomanNumeral
 {
-    const THOUSANDS = 0;
-    const HUNDREDS = 1;
-    const TENS = 2;
-    const ONES = 3;
+    private const THOUSANDS = 0;
+    private const HUNDREDS = 1;
+    private const TENS = 2;
+    private const ONES = 3;
 
-    public function fromInteger(int $input): string
+    private int $digit;
+    private string $value;
+
+    private function __construct(int $digit)
     {
-        $this->validateInput($input);
+        $this->validateInput($digit);
 
-        $input = $this->partitionInput($input);
-        $numeral = $this->convert($input[self::THOUSANDS], 'M');
-        $numeral .= $this->convert($input[self::HUNDREDS], 'C', 'D', 'M');
-        $numeral .= $this->convert($input[self::TENS], 'X', 'L', 'C');
-        $numeral .= $this->convert($input[self::ONES], 'I', 'V', 'X');
+        $this->digit = $digit;
+        $this->value = $this->convert();
+    }
 
-        return $numeral;
+    public static function fromInteger(int $digit): self
+    {
+        return new self($digit);
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    public function asDigit(): int
+    {
+        return $this->digit;
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
     }
 
     private function validateInput(int $input): void
@@ -34,40 +54,58 @@ final class RomanNumeral
         }
     }
 
-    private function partitionInput(int $input, int $divider = 1000, array $partitionedInput = []): array
+    private function convert(): string
     {
-        if ($divider === 1) {
-            array_push($partitionedInput, $input);
-            return $partitionedInput;
-        }
+        $partitions = $this->partition($this->digit);
 
-        $partition = (int) floor($input / $divider);
-        array_push($partitionedInput, $partition);
+        $numeral = $this->convertPartition($partitions[self::THOUSANDS], 'M');
+        $numeral .= $this->convertPartition($partitions[self::HUNDREDS], 'C', 'D', 'M');
+        $numeral .= $this->convertPartition($partitions[self::TENS], 'X', 'L', 'C');
+        $numeral .= $this->convertPartition($partitions[self::ONES], 'I', 'V', 'X');
 
-        $inputForNextPartition = $input % $divider;
-        $dividerForNextPartition = $divider / 10;
-
-        return $this->partitionInput($inputForNextPartition, $dividerForNextPartition, $partitionedInput);
+        return $numeral;
     }
 
-    private function convert(int $input, string $lowRoman, string $mediumRoman = null, string $highRoman = null): string
+    /**
+     * Takes $value and partitions it into [thousands, hundreds, tens, ones].
+     * e.g.: 234 = [0,2,3,4]    1 = [0,0,0,1]       2325 = [2,3,2,5]
+     *
+     * @return int[]
+     */
+    private function partition(int $value, int $divider = 1000, array $partitions = []): array
+    {
+        if ($divider === 1) {
+            array_push($partitions, $value);
+            return $partitions;
+        }
+
+        $partition = (int) floor($value / $divider);
+        array_push($partitions, $partition);
+
+        $valueForNextPartition = $value % $divider;
+        $dividerForNextPartition = $divider / 10;
+
+        return $this->partition($valueForNextPartition, $dividerForNextPartition, $partitions);
+    }
+
+    private function convertPartition(int $partition, string $lowRoman, ?string $mediumRoman = null, ?string $highRoman = null): string
     {
         $numeral = '';
 
-        if ($input === 0) {
+        if ($partition === 0) {
             return $numeral;
         }
-        if ($input === 4) {
+        if ($partition === 4) {
             return $lowRoman . $mediumRoman;
         }
-        if ($input === 9) {
+        if ($partition === 9) {
             return $lowRoman . $highRoman;
         }
-        if ($input >= 5) {
+        if ($partition >= 5) {
           $numeral .= $mediumRoman;
-          $input -= 5;
+          $partition -= 5;
         }
 
-        return $numeral . str_repeat($lowRoman, $input);
+        return $numeral . str_repeat($lowRoman, $partition);
     }
 }
